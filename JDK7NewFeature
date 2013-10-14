@@ -1,0 +1,50 @@
+#WatchDir
+
+```public class WatchFeature {
+
+	@SuppressWarnings("unchecked")
+	static <T> WatchEvent<T> cast(WatchEvent<?> event) {
+		return (WatchEvent<T>) event;
+	}
+
+	public static void main(String[] args) {
+		Path dir = Paths.get(args[0]);
+		try {
+			WatchService watcher = FileSystems.getDefault().newWatchService();
+			dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE,
+					ENTRY_MODIFY);
+
+			while (true) {
+				// wait for key to be signalled
+				WatchKey key;
+				try {
+					key = watcher.take();
+				} catch (InterruptedException x) {
+					return;
+				}
+				for (WatchEvent<?> event : key.pollEvents()) {
+					WatchEvent.Kind kind = event.kind();
+
+					// TBD - provide example of how OVERFLOW event is handled
+					if (kind == OVERFLOW) {
+						continue;
+					}
+
+					// Context for directory entry event is the file name of
+					// entry
+//					WatchEvent<Path> ev = cast(event);
+					Path name = (Path) event.context();
+					System.out.println("modified file:"+name);
+					Path child = dir.resolve(name);
+					
+					// print out event
+					System.out.format("%s: %s\n", event.kind().name(), child);
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
