@@ -108,3 +108,12 @@ public class LockTest {
 
 再摘录下`深入理解JAVA虚拟机`：
 > 在Java里面，最基本的互斥同步手段就是`synchronized`关键字，其经过编译后，会在同步块的前后分别形成`monitorenter`和`monitorexit`这两个字节码指令，这两个字节码都个reference类型的指明要锁定的和解锁的对象。如果Java程序中的synchronized明确指定了对象参数，那就是**这个对象的reference**。如果没有明确指定，那就根据synchronized修饰的是**实例方法**还是**类方法**，去取对应的对象实例或Class对象来作为锁对象。
+
+
+
+ReentrantLock相比synchronized，增加了以下三项内容：
+* 等待可中断
+* 可实现公平锁
+* 锁可以绑定多个条件
+
+
