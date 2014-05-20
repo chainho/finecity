@@ -103,3 +103,8 @@ public class LockTest {
 当然也是可以的，blockSync要锁定的是`对象o`，而objSync方法要锁定的是LockTest的一个对象，这两者也不是同一个，因此可以同时执行。
 
 综上，判断两个方法是否会并行执行，**只需要判断其是否要锁定同一个对象即可**。如果锁定同一个对象，则会互斥(同一线程的重入除外)，否则不会互斥。
+以下是`Java Concurrency in Practice`书中的摘录：
+> 以关键字`synchronized`来修饰的方法就是一种横跨整个方法体的同步代码块，其中该同步代码块的锁就是**方法调用所在的对象**。静态的`synchronized`方法以**Class对象**作为锁。
+
+再摘录下`深入理解JAVA虚拟机`：
+> 在Java里面，最基本的互斥同步手段就是`synchronized`关键字，其经过编译后，会在同步块的前后分别形成`monitorenter`和`monitorexit`这两个字节码指令，这两个字节码都个reference类型的指明要锁定的和解锁的对象。如果Java程序中的synchronized明确指定了对象参数，那就是**这个对象的reference**。如果没有明确指定，那就根据synchronized修饰的是**实例方法**还是**类方法**，去取对应的对象实例或Class对象来作为锁对象。
