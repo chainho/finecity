@@ -136,3 +136,14 @@ class Foo {
 }
 ```
 即使用内部类的方式，内部类的对象只有在使用时才会初始化，从而可以在无锁的情况下实现**延迟初始化形式的单例**。
+
+```
+public class Foo {
+    private static class FooHolder { 
+        static final Foo foo = new Foo(); 
+    } 
+    public static Foo getFoo() {
+        return FooHolder.foo;
+    } 
+}
+```
